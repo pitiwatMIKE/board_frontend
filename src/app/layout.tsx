@@ -4,6 +4,7 @@ import "./globals.css";
 
 const inter = Inter({
   variable: "--font-inter",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
@@ -18,7 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable}`}>{children}</body>
+      <body className={`${inter.variable}`}>
+        <div>{children}</div>
+      </body>
     </html>
   );
 }
