@@ -9,12 +9,17 @@ import clsx from "clsx";
 
 export default function HomePage() {
   const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
+  const [isOpenModal, setIsOpenModal] = useState(false);
   const [search, setSearch] = useState<string>("");
 
   return (
     <div className="bg-grey-100 mx-auto max-w-[798px] p-3 lg:pb-10">
       <div className="mt-6 mb-5">
-        <Action onSelectCategory={setSelectCategory} onSearch={setSearch} />
+        <Action
+          onSelectCategory={setSelectCategory}
+          onSearch={setSearch}
+          onOpenModal={setIsOpenModal}
+        />
       </div>
       <div className="overflow-hidden rounded-2xl">
         {Array.from({ length: 10 }).map((_, index) => (
@@ -31,6 +36,9 @@ export default function HomePage() {
           </div>
         ))}
       </div>
+
+      {/* Modal */}
+      
     </div>
   );
 }
@@ -38,8 +46,9 @@ export default function HomePage() {
 function Action(props: {
   onSelectCategory: (item: DropDownItem | null) => void;
   onSearch: (search: string) => void;
+  onOpenModal: (value: boolean) => void;
 }) {
-  const { onSelectCategory, onSearch } = props;
+  const { onSelectCategory, onSearch, onOpenModal } = props;
   const [isOpenSearch, setIsOpenSearch] = useState(false);
 
   const items: DropDownItem[] = [
@@ -102,6 +111,7 @@ function Action(props: {
             variant="solid"
             rounded="sm"
             size="sm"
+            onClick={() => onOpenModal(true)}
           >
             Create +
           </Button>
