@@ -1,3 +1,4 @@
+"use client";
 import clsx from "clsx";
 import { menuItems } from "../constants/menu";
 import { isMatchPathname } from "../utils/is-match-path";
