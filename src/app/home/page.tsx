@@ -6,6 +6,7 @@ import DropDown, { DropDownItem } from "../components/Dropdown";
 import { useState } from "react";
 import InputField from "../components/InputField";
 import clsx from "clsx";
+import PostForm from "../components/PostForm";
 
 export default function HomePage() {
   const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
@@ -38,7 +39,7 @@ export default function HomePage() {
       </div>
 
       {/* Modal */}
-      
+      <PostForm type="create" isOpen={isOpenModal} setIsOpen={setIsOpenModal} />
     </div>
   );
 }
