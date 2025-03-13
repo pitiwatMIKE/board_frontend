@@ -3,7 +3,7 @@ import Button from "./Button";
 
 export default function Navbar() {
   return (
-    <div className="flex h-16 items-center justify-between bg-green-500 px-4">
+    <div className="flex h-16 items-center justify-between bg-green-500 px-4 fixed top-0 left-0 w-full z-50">
       <h1 className="font-castoro text-xl">a Board</h1>
       <Sidebar />
 

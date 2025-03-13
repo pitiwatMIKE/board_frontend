@@ -29,11 +29,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="h-full w-full">
       <body
-        className={`${inter.variable} ${ibmPlexSans.variable} ${castoro.variable}`}
+        className={`${inter.variable} ${ibmPlexSans.variable} ${castoro.variable} h-full w-full`}
       >
-        <div>{children}</div>
+        <div className="h-full">{children}</div>
       </body>
     </html>
   );
