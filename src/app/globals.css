@@ -23,6 +23,8 @@
   --color-success: #49a569;
   --color-critical: #F23536;
   --color-default: #DADADA;
+  --color-brand: #4A4A4A;
+  --color-badge: #F3F3F3;
 }
 
 @media (prefers-color-scheme: dark) {

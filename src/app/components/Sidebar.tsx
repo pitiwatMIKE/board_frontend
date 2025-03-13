@@ -1,21 +1,12 @@
 "use client";
 import clsx from "clsx";
+import { Sign } from "crypto";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
-
-const menuItems = [
-  {
-    name: "Home",
-    icon: "/home-icon.svg",
-    path: "/home",
-  },
-  {
-    name: "Our Blog",
-    icon: "/edit-icon.svg",
-    path: "/our-blog",
-  },
-];
+import SignInButton from "./SignInButton";
+import { menuItems } from "../constants/menu";
+import { isMatchPathname } from "../utils/is-match-path";
 
 const Sidebar = () => {
   const router = useRouter();
@@ -26,12 +17,6 @@ const Sidebar = () => {
 
   const toggleSidebar = () => setIsOpen(!isOpen);
   const closeSidebar = () => setIsOpen(false);
-
-  const isMatchPathname = (menuPath: string) => {
-    const regex = new RegExp(`^${menuPath}$`);
-    const isMatch = regex.test(pathname);
-    return isMatch;
-  };
 
   // outside click
   useEffect(() => {
@@ -82,7 +67,7 @@ const Sidebar = () => {
             <li
               className={clsx(
                 "mb-4 flex cursor-pointer items-center gap-2",
-                isMatchPathname(item.path) ? "font-bold" : "",
+                isMatchPathname(pathname, item.path) ? "font-bold" : "",
               )}
               key={item.name}
               onClick={() => {
@@ -92,7 +77,9 @@ const Sidebar = () => {
             >
               <Image
                 className={clsx(
-                  isMatchPathname(item.path) ? "opacity-90" : "brightness-75",
+                  isMatchPathname(pathname, item.path)
+                    ? "opacity-90"
+                    : "brightness-75",
                 )}
                 src={item.icon}
                 width={24}
@@ -102,6 +89,10 @@ const Sidebar = () => {
               {item.name}
             </li>
           ))}
+
+          <div className="mt-4">
+            <SignInButton />
+          </div>
         </ul>
       </div>
 
