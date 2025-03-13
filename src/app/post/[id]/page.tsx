@@ -1,11 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import BackCicle from "../components/BackCicle";
-import Avatar from "../components/Avatar";
-import Badge from "../components/Badge";
-import CommentBadge from "../components/CommentBadge";
-import CommentCard from "../components/CommentCard";
-import CommentForm from "../components/CommentForm";
+import BackCicle from "../../components/BackCicle";
+import Avatar from "../../components/Avatar";
+import Badge from "../../components/Badge";
+import CommentBadge from "../../components/CommentBadge";
+import CommentCard from "../../components/CommentCard";
+import CommentForm from "../../components/CommentForm";
 
 export default function OurBlogPagel() {
   const router = useRouter();
