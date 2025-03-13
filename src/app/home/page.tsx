@@ -1,12 +1,46 @@
 "use client";
+import Image from "next/image";
+import Button from "../components/Button";
 import Postcard from "../components/Postcard";
+import DropDown, { DropDownItem } from "../components/Dropdown";
+import { useState } from "react";
 
 export default function HomePage() {
-  return (
-    <div className="bg-grey-100 pb-10">
-      <div className="h-11">tes</div>
+  const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
 
-      <div className="mx-auto max-w-[798px] overflow-hidden rounded-2xl">
+  const items: DropDownItem[] = [
+    { id: 1, name: "Trending" },
+    { id: 2, name: "New" },
+    { id: 3, name: "Top" },
+  ];
+
+  return (
+    <div className="bg-grey-100 mx-auto max-w-[798px] p-3 lg:pb-10">
+      <div className="mt-6 mb-5 flex items-center justify-between">
+        <div className="cursor-pointer lg:hidden">
+          <Image
+            src="/search-icon.svg"
+            alt="search"
+            width={24}
+            height={24}
+            priority
+          />
+        </div>
+        <div className="flex gap-3">
+          <DropDown items={items} onSelect={setSelectCategory} />
+          <Button
+            className="h-10 w-28"
+            color="success"
+            variant="solid"
+            rounded="sm"
+            size="sm"
+          >
+            Create +
+          </Button>
+        </div>
+      </div>
+
+      <div className="overflow-hidden rounded-2xl">
         {Array.from({ length: 10 }).map((_, index) => (
           <div key={index}>
             <Postcard
