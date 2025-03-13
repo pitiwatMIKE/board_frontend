@@ -13,6 +13,20 @@ export default function HomePage() {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [search, setSearch] = useState<string>("");
 
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState<Number | null>(null);
+
+  const handleResetForm = () => {
+    setTitle("");
+    setContent("");
+  };
+
+  const handleSubmitForm = () => {
+    setIsOpenModal(false);
+    handleResetForm();
+  };
+
   return (
     <div className="bg-grey-100 mx-auto max-w-[798px] p-3 lg:pb-10">
       <div className="mt-6 mb-5">
@@ -39,7 +53,16 @@ export default function HomePage() {
       </div>
 
       {/* Modal */}
-      <PostForm type="create" isOpen={isOpenModal} setIsOpen={setIsOpenModal} />
+      <PostForm
+        type="create"
+        isOpen={isOpenModal}
+        setIsOpen={setIsOpenModal}
+        title={title}
+        content={content}
+        setTitle={setTitle}
+        setContent={setContent}
+        onSubmit={handleSubmitForm}
+      />
     </div>
   );
 }
