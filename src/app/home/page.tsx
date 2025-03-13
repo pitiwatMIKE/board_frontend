@@ -1,19 +1,12 @@
 "use client";
-import clsx from "clsx";
 import Postcard from "../components/Postcard";
-import { menuItems } from "../constants/menu";
-import { isMatchPathname } from "../utils/is-match-path";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import SidebarDesktop from "../components/SidebarDesktop";
 
 export default function HomePage() {
-  const pathname = usePathname();
   return (
     <div className="bg-grey-100 pb-10">
       <div className="h-11">tes</div>
 
-      <div className="mx-auto max-w-[798px] flex-3 shrink-0 overflow-hidden rounded-2xl">
+      <div className="mx-auto max-w-[798px] overflow-hidden rounded-2xl">
         {Array.from({ length: 10 }).map((_, index) => (
           <div key={index}>
             <Postcard

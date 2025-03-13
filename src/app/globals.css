@@ -25,6 +25,7 @@
   --color-default: #DADADA;
   --color-brand: #4A4A4A;
   --color-badge: #F3F3F3;
+  --color-online: #00C252;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -1,20 +1,19 @@
 import Navbar from "../components/Navbar";
 import SidebarDesktop from "../components/SidebarDesktop";
 
-export default function HomeLayout({
+export default function OurBlogLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <div className="bg-grey-100 h-full pt-16">
+    <div className="h-ful pt-16">
       <Navbar />
-      <div className="flex gap-5">
+      <div className="flex gap-28 bg-white">
         <div className="hidden flex-1 lg:block">
           <SidebarDesktop />
         </div>
         <div className="flex-3">{children}</div>
-        <div className="hidden flex-1 lg:block"></div>
       </div>
     </div>
   );

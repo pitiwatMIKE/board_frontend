@@ -6,7 +6,7 @@ type ButtonSize = "sm" | "md" | "lg";
 type ButtonRounded = "sm" | "md" | "lg";
 
 const colorVariants = {
-  success: "bg-success border-success text-green-success",
+  success: "bg-success border-success text-success",
   critical: "bg-critical border-critical text-critical",
   default: "bg-default border-default text-default",
 };
