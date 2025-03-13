@@ -6,7 +6,7 @@ type ButtonSize = "sm" | "md" | "lg";
 type ButtonRounded = "sm" | "md" | "lg";
 
 const colorVariants = {
-  success: "bg-green-500 border-green-500 text-green-500",
+  success: "bg-success border-success text-green-success",
   critical: "bg-critical border-critical text-critical",
   default: "bg-default border-default text-default",
 };
@@ -29,10 +29,11 @@ export default function Button(props: ButtonProps) {
       onClick={props.onClick}
       disabled={props.disabled}
       className={clsx(
-        `box-border flex w-full items-center justify-center`,
+        `font-ibm-plex-sans box-border flex items-center justify-center`,
         `${colorVariants[props.color]}`,
         props.variant === "solid" ? "text-white" : "",
-        props.disabled? "cursor-not-allowed" : "cursor-pointer",
+        props.disabled ? "cursor-not-allowed" : "cursor-pointer",
+        props.disabled ? "opacity-50" : "opacity-100",
         {
           [`h-10 text-base`]: props.size === "sm",
           [`h-16 text-base`]: props.size === "md",
@@ -47,7 +48,7 @@ export default function Button(props: ButtonProps) {
           [`border-1 ${colorVariants[props.color]} bg-white`]:
             props.variant === "outline",
         },
-        
+        props.className,
       )}
     >
       {props.children}

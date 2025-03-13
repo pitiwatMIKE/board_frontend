@@ -9,6 +9,8 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-inter: var(--font-inter);
+  --font-ibm-plex-sans: var(--font-ibm-plex-sans);
+  --font-castoro: var(--font-castoro);
   --color-green-500: #243831;
   --color-green-300: #2b5f44;
   --color-green-100: #d8e9e4;

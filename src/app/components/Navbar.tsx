@@ -1,17 +1,23 @@
-import { Castoro } from "next/font/google";
 import Sidebar from "./Sidebar";
-
-const castoro = Castoro({
-  variable: "--font-castoro",
-  weight: "400",
-  style: "italic",
-});
+import Button from "./Button";
 
 export default function Navbar() {
   return (
-    <div className="flex h-16 items-center justify-between bg-green-500 px-4 text-xl">
-      <h1 className={`${castoro.className}`}>a Board</h1>
+    <div className="flex h-16 items-center justify-between bg-green-500 px-4">
+      <h1 className="font-castoro text-xl">a Board</h1>
       <Sidebar />
+
+      <div className="hidden lg:block">
+        <Button
+          className="w-28 font-medium"
+          color="success"
+          variant="solid"
+          size="sm"
+          rounded="sm"
+        >
+          Sign In
+        </Button>
+      </div>
     </div>
   );
 }
