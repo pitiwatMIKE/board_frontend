@@ -1,14 +1,16 @@
 "use client";
 import Image from "next/image";
-import Button from "../components/Button";
-import Postcard from "../components/Postcard";
-import DropDown, { DropDownItem } from "../components/Dropdown";
+import Button from "../../components/Button";
+import Postcard from "../../components/Postcard";
+import DropDown, { DropDownItem } from "../../components/Dropdown";
 import { useState } from "react";
-import InputField from "../components/InputField";
+import InputField from "../../components/InputField";
 import clsx from "clsx";
-import PostForm from "../components/PostForm";
+import PostForm from "../../components/PostForm";
 
-export default function HomePage() {
+export default function SharedPostListPage(props: {
+  page: "home" | "our-blog";
+}) {
   const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [search, setSearch] = useState<string>("");
@@ -48,6 +50,7 @@ export default function HomePage() {
         {Array.from({ length: 10 }).map((_, index) => (
           <div key={index}>
             <Postcard
+              isShowAction={props.page === "our-blog"}
               search={search}
               username="Wittawat"
               avatarImage="https://imgv3.fotor.com/images/slider-image/A-clear-close-up-photo-of-a-woman.jpg"
