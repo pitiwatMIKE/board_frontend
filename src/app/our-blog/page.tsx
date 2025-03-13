@@ -1,13 +1,11 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import BackCicle from "../components/BackCicle";
 import Avatar from "../components/Avatar";
 import Badge from "../components/Badge";
 import CommentBadge from "../components/CommentBadge";
 import CommentCard from "../components/CommentCard";
-import Button from "../components/Button";
-import FormComment from "../components/FormComment";
+import CommentForm from "../components/CommentForm";
 
 export default function OurBlogPagel() {
   const router = useRouter();
@@ -47,7 +45,7 @@ export default function OurBlogPagel() {
       <CommentBadge className="my-6" count={32} />
 
       <div>
-        <FormComment />
+        <CommentForm />
       </div>
 
       <div className="mt-10 flex flex-col gap-7">
