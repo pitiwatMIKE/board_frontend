@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import clsx from "clsx";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export interface DropDownItem {
   id: number;
@@ -9,13 +9,21 @@ export interface DropDownItem {
 }
 
 export interface DropDownProps {
+  type?: "onModal" | null;
+  item?: DropDownItem | null;
   items: DropDownItem[];
   onSelect: (item: DropDownItem | null) => void;
 }
 
 export default function DropDown(props: DropDownProps) {
   const [selected, setSelected] = useState<DropDownItem | null>(null);
-  const { items } = props;
+  const { item, items, type } = props;
+
+  useEffect(() => {
+    if (item) {
+      setSelected(item);
+    }
+  }, [item]);
 
   const handleSelect = (item: DropDownItem) => {
     if (selected?.id === item.id) {
@@ -27,11 +35,14 @@ export default function DropDown(props: DropDownProps) {
     props.onSelect(item);
   };
 
+  const textNoneSelected =
+    type == "onModal" ? "Choose a community" : "Comunity";
+
   return (
     <Menu>
       {({ open }) => (
         <div className="flex items-center">
-          {open && (
+          {type != "onModal" && open && (
             <div
               className={clsx(
                 "bg-opacity-50 fixed inset-0 z-30 bg-black opacity-50",
@@ -43,20 +54,28 @@ export default function DropDown(props: DropDownProps) {
           <MenuButton
             className={clsx(
               "font-ibm-plex-sans flex items-center gap-0.5 font-medium text-black",
+              {
+                "border-success text-success flex h-10 w-48 items-center justify-center rounded-lg border-1":
+                  type == "onModal",
+              },
             )}
           >
-            <span>{selected ? selected.name : "Comunity"}</span>
+            <span>{selected ? selected.name : textNoneSelected}</span>
             <Image
-              src="/chevron-down.svg"
+              src={
+                type == "onModal"
+                  ? "/chevron-down-green.svg"
+                  : "/chevron-down.svg"
+              }
               alt="chevron-down"
               width={20}
               height={20}
             />
           </MenuButton>
           <MenuItems
-            anchor="bottom end"
+            anchor={type == "onModal" ? "bottom start" : "bottom end"}
             className={clsx(
-              "z-40 min-w-52 lg:min-w-80 rounded-sm bg-white text-black shadow-lg drop-shadow-md",
+              "z-40 min-w-52 rounded-sm bg-white text-black shadow-lg drop-shadow-md lg:min-w-80",
             )}
           >
             {items.map((item, index) => (

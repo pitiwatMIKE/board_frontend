@@ -2,6 +2,7 @@ import Modal from "./Modal";
 import TextAreaField from "./TextAreaField";
 import Button from "./Button";
 import InputField from "./InputField";
+import DropDown, { DropDownItem } from "./Dropdown";
 
 interface PostFormProps {
   type: "create" | "edit";
@@ -11,6 +12,9 @@ interface PostFormProps {
   content: string;
   setTitle: (title: string) => void;
   setContent: (content: string) => void;
+  categoryItems: DropDownItem[];
+  category: DropDownItem | null;
+  setCategory: (category: DropDownItem | null) => void;
   onSubmit: () => void;
 }
 
@@ -24,6 +28,9 @@ export default function PostForm(props: PostFormProps) {
     setTitle,
     setContent,
     onSubmit,
+    setCategory,
+    category,
+    categoryItems,
   } = props;
 
   const handleSubmit = () => {
@@ -35,6 +42,14 @@ export default function PostForm(props: PostFormProps) {
       <h1 className="text-text mb-6 text-xl font-semibold">
         {type === "create" ? "Create Post" : "Edit Post"}
       </h1>
+      <div className="mb-3">
+        <DropDown
+          type={"onModal"}
+          item={category}
+          items={categoryItems}
+          onSelect={setCategory}
+        />
+      </div>
       <InputField
         placeholder="Title"
         value={title}
@@ -62,7 +77,7 @@ export default function PostForm(props: PostFormProps) {
           color="success"
           variant="solid"
           rounded="sm"
-          disabled={!title?.trim() || !content?.trim()}
+          disabled={!title?.trim() || !content?.trim() || !category}
           onClick={handleSubmit}
         >
           {type === "create" ? "Post" : "Confirm"}

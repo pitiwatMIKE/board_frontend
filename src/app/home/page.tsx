@@ -15,11 +15,18 @@ export default function HomePage() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState<Number | null>(null);
+  const [category, setCategory] = useState<DropDownItem | null>(null);
+
+  const categoryItems: DropDownItem[] = [
+    { id: 1, name: "Trending" },
+    { id: 2, name: "New" },
+    { id: 3, name: "Top" },
+  ];
 
   const handleResetForm = () => {
     setTitle("");
     setContent("");
+    setCategory(null);
   };
 
   const handleSubmitForm = () => {
@@ -31,6 +38,7 @@ export default function HomePage() {
     <div className="bg-grey-100 mx-auto max-w-[798px] p-3 lg:pb-10">
       <div className="mt-6 mb-5">
         <Action
+          categoryItems={categoryItems}
           onSelectCategory={setSelectCategory}
           onSearch={setSearch}
           onOpenModal={setIsOpenModal}
@@ -61,6 +69,9 @@ export default function HomePage() {
         content={content}
         setTitle={setTitle}
         setContent={setContent}
+        categoryItems={categoryItems}
+        category={category}
+        setCategory={setCategory}
         onSubmit={handleSubmitForm}
       />
     </div>
@@ -68,18 +79,13 @@ export default function HomePage() {
 }
 
 function Action(props: {
+  categoryItems: DropDownItem[];
   onSelectCategory: (item: DropDownItem | null) => void;
   onSearch: (search: string) => void;
   onOpenModal: (value: boolean) => void;
 }) {
-  const { onSelectCategory, onSearch, onOpenModal } = props;
+  const { categoryItems, onSelectCategory, onSearch, onOpenModal } = props;
   const [isOpenSearch, setIsOpenSearch] = useState(false);
-
-  const items: DropDownItem[] = [
-    { id: 1, name: "Trending" },
-    { id: 2, name: "New" },
-    { id: 3, name: "Top" },
-  ];
 
   return (
     <div className="flex items-center justify-between gap-9">
@@ -128,7 +134,7 @@ function Action(props: {
       </>
       {!isOpenSearch && (
         <div className="flex gap-3 lg:gap-6">
-          <DropDown items={items} onSelect={onSelectCategory} />
+          <DropDown items={categoryItems} onSelect={onSelectCategory} />
           <Button
             className="h-10 w-28"
             color="success"
