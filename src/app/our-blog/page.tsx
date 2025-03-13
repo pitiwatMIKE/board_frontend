@@ -7,6 +7,7 @@ import Badge from "../components/Badge";
 import CommentBadge from "../components/CommentBadge";
 import CommentCard from "../components/CommentCard";
 import Button from "../components/Button";
+import FormComment from "../components/FormComment";
 
 export default function OurBlogPagel() {
   const router = useRouter();
@@ -46,14 +47,7 @@ export default function OurBlogPagel() {
       <CommentBadge className="my-6" count={32} />
 
       <div>
-        <Button
-          className="h-10 w-36"
-          color="success"
-          variant="outline"
-          rounded="sm"
-        >
-          Add Comments
-        </Button>
+        <FormComment />
       </div>
 
       <div className="mt-10 flex flex-col gap-7">
