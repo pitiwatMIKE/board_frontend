@@ -1,3 +1,4 @@
+import { highlightText } from "../utils/highlightText";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import CommentBadge from "./CommentBadge";
@@ -9,6 +10,7 @@ interface PostcardProps {
   username: string;
   category: string;
   commentCount: number;
+  search?: string;
 }
 
 export default function Postcard(props: PostcardProps) {
@@ -19,7 +21,15 @@ export default function Postcard(props: PostcardProps) {
         <div className="text-grey-300">{props.username}</div>
       </div>
       <Badge className="mb-3" text={props.category} />
-      <h1 className="text-text text-base font-semibold">{props.title}</h1>
+      <h1 className="text-text text-base font-semibold">
+        {
+          <span
+            dangerouslySetInnerHTML={{
+              __html: highlightText(props.title, props.search || ""),
+            }}
+          />
+        }
+      </h1>
       <p className="text-text line-clamp-2 text-xs">{props.content}</p>
       <CommentBadge className="mt-3" count={props.commentCount} />
     </div>
