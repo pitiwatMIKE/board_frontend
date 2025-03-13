@@ -19,6 +19,8 @@
   --color-gary-100: #bbc2c0;
   --color-gray-300: #939494;
   --color-success: #49a569;
+  --color-critical: #F23536;
+  --color-default: #DADADA;
 }
 
 @media (prefers-color-scheme: dark) {

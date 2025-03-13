@@ -1,4 +1,5 @@
 import { Castoro } from "next/font/google";
+import Sidebar from "./Sidebar";
 
 const castoro = Castoro({
   variable: "--font-castoro",
@@ -11,6 +12,7 @@ export default function Navbar() {
     <div className="flex h-16 items-center justify-between bg-green-500 px-4 text-xl">
       <h1 className={`${castoro.className}`}>aBoard</h1>
       <h1 className={`${castoro.className}`}>aBoard</h1>
+      <Sidebar />
     </div>
   );
 }
