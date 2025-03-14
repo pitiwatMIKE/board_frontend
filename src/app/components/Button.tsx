@@ -8,7 +8,7 @@ type ButtonRounded = "sm" | "md" | "lg";
 const colorVariants = {
   success: "bg-success border-success text-success",
   critical: "bg-critical border-critical text-critical",
-  default: "bg-default border-default text-default",
+  default: "bg-default border-default text-search",
 };
 
 interface ButtonProps {
