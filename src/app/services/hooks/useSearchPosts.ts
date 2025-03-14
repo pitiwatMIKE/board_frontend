@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import useSWR from "swr";
-import apiClient from "../apiClient";
+import apiClient, { fetcher } from "../apiClient";
 import { SearchPostResponse } from "@/app/interfaces/response/postResponse";
 
 interface SearchParams {
@@ -17,9 +17,6 @@ interface UseSearchPostsOptions {
   params?: SearchParams;
   swrOptions?: any;
 }
-
-const fetcher = <T>(url: string): Promise<T> =>
-  apiClient.get(url).then((res) => res.data);
 
 export function useSearchPosts({
   params = {},

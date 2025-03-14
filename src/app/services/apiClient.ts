@@ -25,3 +25,6 @@ apiClient.interceptors.response.use(
 );
 
 export default apiClient;
+
+export const fetcher = <T>(url: string): Promise<T> =>
+  apiClient.get(url).then((res) => res.data);
