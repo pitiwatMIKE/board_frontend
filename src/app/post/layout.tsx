@@ -7,13 +7,13 @@ export default function OurBlogLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="h-ful pt-16">
+    <div className="h-full pt-16">
       <Navbar />
-      <div className="flex gap-28 bg-white">
+      <div className="flex h-full gap-28 bg-white">
         <div className="hidden flex-1 lg:block">
           <SidebarDesktop />
         </div>
-        <div className="flex-3">{children}</div>
+        <div className="h-full flex-3 overflow-scroll">{children}</div>
       </div>
     </div>
   );

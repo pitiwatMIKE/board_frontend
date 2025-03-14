@@ -2,29 +2,56 @@ import { useState } from "react";
 import Button from "./Button";
 import TextAreaField from "./TextAreaField";
 import Modal from "./Modal";
+import useUserTokenStore from "../store/userToken";
+import { useRouter } from "next/navigation";
 
-export default function FormComment() {
+export default function FormComment(
+  props: Readonly<{
+    postId: number;
+    comment: string;
+    setComment: (comment: string) => void;
+    onPost: () => void;
+  }>,
+) {
+  const router = useRouter();
+  const { token } = useUserTokenStore();
+  const { comment, setComment, onPost } = props;
   const [isOpenForm, setIsOpenForm] = useState(false);
   const [isOpenModal, setIsOpenModal] = useState(false);
 
   const handleCancel = () => {
     setIsOpenForm(false);
+    setIsOpenModal(false);
   };
 
   const handlePost = () => {
     setIsOpenForm(false);
+    setIsOpenModal(false);
+    onPost();
+  };
+
+  const handleAddComment = () => {
+    setIsOpenForm(true);
+    if (!token) {
+      router.push(`/sign-in?redirect=/post/${props.postId}`);
+    }
   };
 
   return (
     <>
       {isOpenForm ? null : (
         <div className="hidden lg:block">
-          <AddCommentButton onClick={() => setIsOpenForm(true)} />
+          <AddCommentButton onClick={handleAddComment} />
         </div>
       )}
       {isOpenForm && (
         <div className="hidden lg:block">
-          <TextAreaField placeholder="What’s on your mind..." rows={4} />
+          <TextAreaField
+            placeholder="What’s on your mind..."
+            rows={4}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
           <div className="mt-4 flex items-center justify-end gap-2">
             <Button
               className="h-10 w-28"
@@ -41,6 +68,7 @@ export default function FormComment() {
               variant="solid"
               rounded="sm"
               onClick={handlePost}
+              disabled={!comment?.trim()}
             >
               Post
             </Button>
@@ -50,7 +78,7 @@ export default function FormComment() {
 
       {/* Modal Form */}
       <div className="block lg:hidden">
-        <AddCommentButton onClick={() => setIsOpenModal(true)} />
+        <AddCommentButton onClick={handleAddComment} />
       </div>
       <Modal
         className="max-w-2xl"
@@ -58,7 +86,12 @@ export default function FormComment() {
         setIsOpen={setIsOpenModal}
       >
         <h1 className="text-text mb-4 text-xl">Add Comments</h1>
-        <TextAreaField placeholder="What’s on your mind..." rows={4} />
+        <TextAreaField
+          placeholder="What’s on your mind..."
+          rows={4}
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+        />
 
         <div className="mt-6 flex flex-col gap-2">
           <Button
@@ -66,6 +99,7 @@ export default function FormComment() {
             color="success"
             variant="outline"
             rounded="sm"
+            onClick={handleCancel}
           >
             Cancel
           </Button>
@@ -74,6 +108,8 @@ export default function FormComment() {
             color="success"
             variant="solid"
             rounded="sm"
+            onClick={handlePost}
+            disabled={!comment?.trim()}
           >
             Post
           </Button>

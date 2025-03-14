@@ -1,18 +1,22 @@
 "use client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import BackCicle from "../../components/BackCicle";
 import Avatar from "../../components/Avatar";
 import Badge from "../../components/Badge";
 import CommentBadge from "../../components/CommentBadge";
 import CommentCard from "../../components/CommentCard";
 import CommentForm from "../../components/CommentForm";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { fetcher } from "@/app/services/apiClient";
 import { Post } from "@/app/interfaces/post";
 import { Comment } from "@/app/interfaces/comment";
+import { useState } from "react";
+import { createComment } from "@/app/services/createComment";
 
 export default function OurBlogPage() {
   const params = useParams<{ id: string }>();
+  const [comment, setComment] = useState<string>("");
+
   const {
     data: post,
     error: postError,
@@ -25,10 +29,25 @@ export default function OurBlogPage() {
     isLoading: commentLoading,
   } = useSWR<Comment[]>(`/comment/by-post/${params.id}`, fetcher);
 
-  if (postLoading || commentLoading) return <div>Loading...</div>;
-  if (postError || commentError) return <div>Error: {postError.message}</div>;
+  if (postLoading || commentLoading)
+    return <div className="text-text mt-4 text-2xl">Loading...</div>;
+  if (postError || commentError)
+    return <div className="text-text mt-4 text-2xl">{postError.message}</div>;
+  if (!post || !comments)
+    return <div className="text-text mt-4 text-2xl">Post not found</div>;
 
-  if (!post || !comments) return <div>Post not found</div>;
+  const handleSubmit = async () => {
+    const data = await createComment({
+      postId: post.id,
+      content: comment,
+    });
+
+    if (data) {
+      setComment("");
+      mutate(`/post/${params.id}`);
+      mutate(`/comment/by-post/${params.id}`);
+    }
+  };
 
   return (
     <div className="bg-white px-4 pb-10 lg:max-w-[800px] lg:pr-4">
@@ -53,10 +72,15 @@ export default function OurBlogPage() {
         <p className="text-text mt-3 text-sm">{post.content}</p>
       </div>
 
-      <CommentBadge className="my-6" count={32} />
+      <CommentBadge className="my-6" count={post.commentCount} />
 
       <div>
-        <CommentForm />
+        <CommentForm
+          postId={post.id}
+          comment={comment}
+          setComment={setComment}
+          onPost={handleSubmit}
+        />
       </div>
 
       <div className="mt-10 flex flex-col gap-7">

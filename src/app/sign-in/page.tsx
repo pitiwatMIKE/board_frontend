@@ -10,15 +10,16 @@ import { redirect, useRouter, useSearchParams } from "next/navigation";
 export default function SignInPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { setUserToken, token } = useUserTokenStore();
+  const { setUserToken } = useUserTokenStore();
   const [username, setUsername] = useState("");
   const redirectPath = searchParams.get("redirect");
 
   useEffect(() => {
+    const token = useUserTokenStore.getState().token;
     if (token) {
       redirect("/");
     }
-  }, [token]);
+  }, []);
 
   const handleSignIn = async () => {
     try {

@@ -7,6 +7,7 @@ export interface Post {
   content: string;
   category: Category;
   user: User;
+  commentCount: number;
   createdAt: string;
   updatedAt: string;
 }
