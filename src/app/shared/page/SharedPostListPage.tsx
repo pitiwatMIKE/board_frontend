@@ -1,6 +1,6 @@
 "use client";
 import Postcard from "../../components/Postcard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostForm from "../../components/PostForm";
 import ActionPostList from "@/app/components/ActionPostList";
 import { DropDownItem } from "@/app/components/Dropdown";
@@ -10,25 +10,17 @@ import { useSearchPosts } from "@/app/services/hooks/useSearchPosts";
 import clsx from "clsx";
 import { SearchPost } from "@/app/interfaces/response/postResponse";
 import Pagination from "@/app/components/Pagination";
-import { createPost } from "@/app/services/hooks/createPost";
+import { createPost } from "@/app/services/createPost";
 import useUserTokenStore from "@/app/store/userToken";
+import { Post } from "@/app/interfaces/post";
+import { updatePost } from "@/app/services/updatePost";
+import { deletePost } from "@/app/services/deletePost";
 
 export default function SharedPostListPage(props: {
   page: "home" | "our-blog";
 }) {
-  const { user } = useUserTokenStore();
-
-  if (props.page === "our-blog" && !user?.id) {
-    redirect("/sign-in?redirect=/our-blog");
-  }
-
-  const categoryItems: DropDownItem[] = [
-    { id: 1, name: "Trending" },
-    { id: 2, name: "New" },
-    { id: 3, name: "Top" },
-  ];
-
   const router = useRouter();
+  const [userId, setUserId] = useState<number | null>(null);
   const [posts, setPosts] = useState<SearchPost[]>([]);
   const [type, setType] = useState<"create" | "edit">("create");
   const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
@@ -40,56 +32,97 @@ export default function SharedPostListPage(props: {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<DropDownItem | null>(null);
-  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [postId, setPostId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const userId = useUserTokenStore.getState().user?.id;
+    if (!userId) {
+      if (props.page === "our-blog") redirect("/sign-in?redirect=/our-blog");
+    } else {
+      setUserId(userId);
+    }
+  }, []);
 
   const { search, setSearch, data, error, isLoading } = useSearchPosts({
     params: {
       page,
-      limit: 10,
-      userId: props.page === "our-blog" ? user?.id : undefined,
+      limit: -1,
+      userId: props.page === "our-blog" ? userId! : undefined,
       categoryId: selectCategory?.id ? selectCategory.id : undefined,
     },
   });
 
-  const handleResetForm = () => {
+  const categoryItems: DropDownItem[] = [
+    { id: 1, name: "Trending" },
+    { id: 2, name: "New" },
+    { id: 3, name: "Top" },
+  ];
+
+  useEffect(() => {
+    setPosts(data.posts);
+  }, [data.posts]);
+
+  const handleResetForm = async () => {
     setTitle("");
     setContent("");
     setCategory(null);
   };
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async () => {
     setIsOpenPostFormModal(false);
     handleResetForm();
 
-    createPost({
-      title,
-      content,
-      categoryId: category!.id,
-    });
+    if (type === "create") {
+      const post = await createPost({
+        title,
+        content,
+        categoryId: category!.id,
+      });
+      setPosts((prev) => [post, ...prev]);
+    } else {
+      if (postId === null) return;
+      const data = await updatePost(postId, {
+        title: title,
+        content: content,
+        categoryId: category!.id,
+      });
+
+      setPosts((prev) => {
+        const index = prev.findIndex((p) => p.id === postId);
+        if (index === -1) return prev;
+        prev[index] = data;
+        return [...prev];
+      });
+    }
   };
 
   const handleSubmitDelete = (id: number | null) => {
     setIsOpenDeleteModal(false);
     if (!id) return;
-    // delete post
+    deletePost(id);
+    setPosts((prev) => prev.filter((p) => p.id !== id));
   };
-
-  const handleSearch = () => {};
 
   const handleOpenModalCreate = () => {
     setIsOpenPostFormModal(true);
     setType("create");
   };
 
-  const handleOpenModalEdit = () => {
-    setIsOpenPostFormModal(true);
+  const handleOpenModalEdit = async (post: Post) => {
     setType("edit");
-    // set data to form
+    setPostId(post.id);
+    setTitle(post.title);
+    setContent(post.content);
+    setCategory({
+      id: post.category.id,
+      name: post.category.name,
+    });
+    setIsOpenPostFormModal(true);
   };
 
   const handleOpenModalDelete = (id: number) => {
     setIsOpenDeleteModal(true);
-    setDeleteId(id);
+    setPostId(id);
   };
 
   return (
@@ -103,14 +136,14 @@ export default function SharedPostListPage(props: {
         />
       </div>
       <div className="overflow-hidden rounded-2xl">
-        {!isLoading && data?.posts.length === 0 && (
+        {!isLoading && posts.length === 0 && (
           <div className="text-text text-lg font-semibold">No posts found</div>
         )}
         {isLoading && error && (
           <div className="text-text text-lg font-semibold">{error}</div>
         )}
 
-        {data.posts.map((post) => (
+        {posts.map((post) => (
           <div
             key={post.id}
             className="cursor-pointer"
@@ -125,7 +158,7 @@ export default function SharedPostListPage(props: {
               commentCount={post.commentCount}
               title={post.title}
               content={post.content}
-              onEdit={handleOpenModalEdit}
+              onEdit={() => handleOpenModalEdit(post)}
               onDelete={() => handleOpenModalDelete(post.id)}
             />
           </div>
@@ -158,7 +191,7 @@ export default function SharedPostListPage(props: {
       />
 
       <DeletePostModal
-        id={deleteId}
+        id={postId}
         isOpen={isOpenDeleteModal}
         setIsOpen={setIsOpenDeleteModal}
         onDelete={handleSubmitDelete}

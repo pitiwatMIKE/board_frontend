@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createUser } from "../services/createUser";
 import useUserTokenStore from "../store/userToken";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
@@ -14,9 +14,11 @@ export default function SignInPage() {
   const [username, setUsername] = useState("");
   const redirectPath = searchParams.get("redirect");
 
-  if (token) {
-    redirect("/");
-  }
+  useEffect(() => {
+    if (token) {
+      redirect("/");
+    }
+  }, [token]);
 
   const handleSignIn = async () => {
     try {
