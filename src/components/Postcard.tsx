@@ -1,9 +1,9 @@
 import clsx from "clsx";
-import { highlightText } from "../utils/highlightText";
 import Avatar from "./Avatar";
 import Badge from "./Badge";
 import CommentBadge from "./CommentBadge";
 import Image from "next/image";
+import { highlightText } from "@/utils/highlightText";
 
 interface PostcardProps {
   title: string;

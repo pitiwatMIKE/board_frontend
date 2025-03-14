@@ -1,12 +1,12 @@
 "use client";
 import clsx from "clsx";
-import { Sign } from "crypto";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import SignInButton from "./SignInButton";
-import { menuItems } from "../constants/menu";
-import { isMatchPathname } from "../utils/isMatchPath";
+import { isMatchPathname } from "@/utils/isMatchPath";
+import { menuItems } from "@/constants/menu";
+
 
 const Sidebar = () => {
   const router = useRouter();

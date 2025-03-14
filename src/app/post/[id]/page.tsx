@@ -1,17 +1,17 @@
 "use client";
 import { useParams } from "next/navigation";
-import BackCicle from "../../components/BackCicle";
-import Avatar from "../../components/Avatar";
-import Badge from "../../components/Badge";
-import CommentBadge from "../../components/CommentBadge";
-import CommentCard from "../../components/CommentCard";
-import CommentForm from "../../components/CommentForm";
 import useSWR, { mutate } from "swr";
-import { fetcher } from "@/app/services/apiClient";
-import { Post } from "@/app/interfaces/post";
-import { Comment } from "@/app/interfaces/comment";
+import { fetcher } from "@/services/apiClient";
+import { Post } from "@/interfaces/post";
+import { Comment } from "@/interfaces/comment";
 import { useState } from "react";
-import { createComment } from "@/app/services/createComment";
+import { createComment } from "@/services/createComment";
+import BackCicle from "@/components/BackCicle";
+import Avatar from "@/components/Avatar";
+import Badge from "@/components/Badge";
+import CommentBadge from "@/components/CommentBadge";
+import CommentForm from "@/components/CommentForm";
+import CommentCard from "@/components/CommentCard";
 
 export default function OurBlogPage() {
   const params = useParams<{ id: string }>();

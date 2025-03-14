@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
-import Button from "../components/Button";
-import InputField from "../components/InputField";
 import { useEffect, useState } from "react";
-import { createUser } from "../services/createUser";
-import useUserTokenStore from "../store/userToken";
+import { createUser } from "../../services/createUser";
+import useUserTokenStore from "../../store/userToken";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
+import InputField from "@/components/InputField";
+import Button from "@/components/Button";
 
 export default function SignInPage() {
   const router = useRouter();

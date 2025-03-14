@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import Button from "./Button";
-import useUserTokenStore from "../store/userToken";
 import Avatar from "./Avatar";
+import useUserTokenStore from "@/store/userToken";
 
 export default function SignInButton() {
   const router = useRouter();

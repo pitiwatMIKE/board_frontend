@@ -1,5 +1,6 @@
-import Navbar from "../components/Navbar";
-import SidebarDesktop from "../components/SidebarDesktop";
+import Navbar from "@/components/Navbar";
+import SidebarDesktop from "@/components/SidebarDesktop";
+
 
 export default function HomeLayout({
   children,

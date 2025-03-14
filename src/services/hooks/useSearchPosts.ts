@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import useSWR from "swr";
 import apiClient, { fetcher } from "../apiClient";
-import { SearchPostResponse } from "@/app/interfaces/response/postResponse";
+import { SearchPostResponse } from "@/interfaces/response/postResponse";
 
 interface SearchParams {
   search?: string;

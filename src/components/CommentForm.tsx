@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "./Button";
 import TextAreaField from "./TextAreaField";
 import Modal from "./Modal";
-import useUserTokenStore from "../store/userToken";
 import { useRouter } from "next/navigation";
+import useUserTokenStore from "@/store/userToken";
 
 export default function FormComment(
   props: Readonly<{

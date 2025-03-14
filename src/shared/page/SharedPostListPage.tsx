@@ -1,20 +1,23 @@
 "use client";
-import Postcard from "../../components/Postcard";
+
 import { useEffect, useState } from "react";
-import PostForm from "../../components/PostForm";
-import ActionPostList from "@/app/components/ActionPostList";
-import { DropDownItem } from "@/app/components/Dropdown";
+
 import { redirect, useRouter } from "next/navigation";
-import { DeletePostModal } from "@/app/components/DeletePostModal";
-import { useSearchPosts } from "@/app/services/hooks/useSearchPosts";
+
+import { useSearchPosts } from "@/services/hooks/useSearchPosts";
 import clsx from "clsx";
-import { SearchPost } from "@/app/interfaces/response/postResponse";
-import Pagination from "@/app/components/Pagination";
-import { createPost } from "@/app/services/createPost";
-import useUserTokenStore from "@/app/store/userToken";
-import { Post } from "@/app/interfaces/post";
-import { updatePost } from "@/app/services/updatePost";
-import { deletePost } from "@/app/services/deletePost";
+import { SearchPost } from "@/interfaces/response/postResponse";
+import { createPost } from "@/services/createPost";
+import useUserTokenStore from "@/store/userToken";
+import { Post } from "@/interfaces/post";
+import { updatePost } from "@/services/updatePost";
+import { deletePost } from "@/services/deletePost";
+import { DropDownItem } from "@/components/Dropdown";
+import PostForm from "@/components/PostForm";
+import Pagination from "@/components/Pagination";
+import { DeletePostModal } from "@/components/DeletePostModal";
+import ActionPostList from "@/components/ActionPostList";
+import Postcard from "@/components/Postcard";
 
 export default function SharedPostListPage(props: {
   page: "home" | "our-blog";

@@ -1,4 +1,4 @@
-import { CreatePostData } from "@/app/interfaces/request/creratePostData";
+import { CreatePostData } from "@/interfaces/request/creratePostData";
 import apiClient from "./apiClient";
 
 export async function createPost(data: CreatePostData) {
