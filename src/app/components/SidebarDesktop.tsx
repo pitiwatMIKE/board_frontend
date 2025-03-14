@@ -1,7 +1,7 @@
 "use client";
 import clsx from "clsx";
 import { menuItems } from "../constants/menu";
-import { isMatchPathname } from "../utils/is-match-path";
+import { isMatchPathname } from "../utils/isMatchPath";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 

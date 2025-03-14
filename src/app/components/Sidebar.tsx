@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import SignInButton from "./SignInButton";
 import { menuItems } from "../constants/menu";
-import { isMatchPathname } from "../utils/is-match-path";
+import { isMatchPathname } from "../utils/isMatchPath";
 
 const Sidebar = () => {
   const router = useRouter();
