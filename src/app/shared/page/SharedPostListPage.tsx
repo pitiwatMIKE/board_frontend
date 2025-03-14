@@ -4,18 +4,24 @@ import { useState } from "react";
 import PostForm from "../../components/PostForm";
 import ActionPostList from "@/app/components/ActionPostList";
 import { DropDownItem } from "@/app/components/Dropdown";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { DeletePostModal } from "@/app/components/DeletePostModal";
 import { useSearchPosts } from "@/app/services/hooks/useSearchPosts";
 import clsx from "clsx";
-import {
-  SearchPost,
-} from "@/app/interfaces/response/postResponse";
+import { SearchPost } from "@/app/interfaces/response/postResponse";
 import Pagination from "@/app/components/Pagination";
+import { createPost } from "@/app/services/hooks/createPost";
+import useUserTokenStore from "@/app/store/userToken";
 
 export default function SharedPostListPage(props: {
   page: "home" | "our-blog";
 }) {
+  const { user } = useUserTokenStore();
+
+  if (props.page === "our-blog" && !user?.id) {
+    redirect("/sign-in?redirect=/our-blog");
+  }
+
   const categoryItems: DropDownItem[] = [
     { id: 1, name: "Trending" },
     { id: 2, name: "New" },
@@ -40,7 +46,7 @@ export default function SharedPostListPage(props: {
     params: {
       page,
       limit: 10,
-      userId: props.page === "our-blog" ? 1 : undefined,
+      userId: props.page === "our-blog" ? user?.id : undefined,
       categoryId: selectCategory?.id ? selectCategory.id : undefined,
     },
   });
@@ -54,6 +60,12 @@ export default function SharedPostListPage(props: {
   const handleSubmitForm = () => {
     setIsOpenPostFormModal(false);
     handleResetForm();
+
+    createPost({
+      title,
+      content,
+      categoryId: category!.id,
+    });
   };
 
   const handleSubmitDelete = (id: number | null) => {
