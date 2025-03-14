@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Castoro, IBM_Plex_Sans, Inter } from "next/font/google";
 import "./globals.css";
+import InitMasterData from "@/init/InitMasterData";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,7 +34,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${ibmPlexSans.variable} ${castoro.variable} h-full w-full`}
       >
-        <div className="h-full">{children}</div>
+        <InitMasterData>
+          <div className="h-full">{children}</div>
+        </InitMasterData>
       </body>
     </html>
   );

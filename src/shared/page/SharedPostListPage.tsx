@@ -18,11 +18,13 @@ import Pagination from "@/components/Pagination";
 import { DeletePostModal } from "@/components/DeletePostModal";
 import ActionPostList from "@/components/ActionPostList";
 import Postcard from "@/components/Postcard";
+import useCategoryStore from "@/store/category";
 
 export default function SharedPostListPage(props: {
   page: "home" | "our-blog";
 }) {
   const router = useRouter();
+  const { categories } = useCategoryStore();
   const [userId, setUserId] = useState<number | null>(null);
   const [posts, setPosts] = useState<SearchPost[]>([]);
   const [type, setType] = useState<"create" | "edit">("create");
@@ -54,12 +56,6 @@ export default function SharedPostListPage(props: {
       categoryId: selectCategory?.id ? selectCategory.id : undefined,
     },
   });
-
-  const categoryItems: DropDownItem[] = [
-    { id: 1, name: "Trending" },
-    { id: 2, name: "New" },
-    { id: 3, name: "Top" },
-  ];
 
   useEffect(() => {
     setPosts(data.posts);
@@ -132,7 +128,7 @@ export default function SharedPostListPage(props: {
     <div className="mx-auto max-w-[798px] p-3 lg:pb-10">
       <div className="mt-6 mb-5">
         <ActionPostList
-          categoryItems={categoryItems}
+          categoryItems={categories}
           onSelectCategory={setSelectCategory}
           onSearch={setSearch}
           onOpenModal={handleOpenModalCreate}
@@ -187,7 +183,7 @@ export default function SharedPostListPage(props: {
         content={content}
         setTitle={setTitle}
         setContent={setContent}
-        categoryItems={categoryItems}
+        categoryItems={categories}
         category={category}
         setCategory={setCategory}
         onSubmit={handleSubmitForm}

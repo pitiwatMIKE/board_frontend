@@ -53,7 +53,7 @@ export default function DropDown(props: DropDownProps) {
 
           <MenuButton
             className={clsx(
-              "font-ibm-plex-sans flex items-center gap-0.5 font-medium text-black",
+              "font-ibm-plex-sans flex items-center justify-end gap-0.5 font-medium whitespace-nowrap text-black",
               {
                 "border-success text-success flex h-10 w-48 items-center justify-center rounded-lg border-1":
                   type == "onModal",
