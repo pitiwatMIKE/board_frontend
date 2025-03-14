@@ -33,7 +33,10 @@ export default function Postcard(props: PostcardProps) {
           alt="edit"
           width={18}
           height={18}
-          onClick={props?.onEdit}
+          onClick={(event: React.MouseEvent) => {
+            event.stopPropagation();
+            props.onEdit?.();
+          }}
         />
         <Image
           className="cursor-pointer"
@@ -41,7 +44,10 @@ export default function Postcard(props: PostcardProps) {
           alt="edit"
           width={18}
           height={18}
-          onClick={props?.onDelete}
+          onClick={(event: React.MouseEvent) => {
+            event.stopPropagation();
+            props.onDelete?.();
+          }}
         />
       </div>
 
