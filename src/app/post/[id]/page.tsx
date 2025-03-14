@@ -12,6 +12,7 @@ import Badge from "@/components/Badge";
 import CommentBadge from "@/components/CommentBadge";
 import CommentForm from "@/components/CommentForm";
 import CommentCard from "@/components/CommentCard";
+import { coverDateformat } from "@/utils/coverDateformat";
 
 export default function OurBlogPage() {
   const params = useParams<{ id: string }>();
@@ -63,7 +64,7 @@ export default function OurBlogPage() {
           className="!h-12 !w-12"
         />
         <div className="test text-text text-sm">{post.user.username}</div>
-        <div className="text-grey-300 text-xs">{post.user.createdAt}</div>
+        <div className="text-grey-300 text-xs">{coverDateformat(post.user.createdAt)}</div>
       </div>
       <Badge className="my-4" text="TV" />
 
@@ -89,7 +90,7 @@ export default function OurBlogPage() {
             <CommentCard
               username={comment.user.username}
               avatar={comment.user.avatar}
-              date={comment.createdAt}
+              date={coverDateformat(comment.createdAt)}
               comment={comment.content}
             />
           </div>
