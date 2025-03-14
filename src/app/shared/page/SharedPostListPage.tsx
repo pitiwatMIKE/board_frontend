@@ -6,6 +6,12 @@ import ActionPostList from "@/app/components/ActionPostList";
 import { DropDownItem } from "@/app/components/Dropdown";
 import { useRouter } from "next/navigation";
 import { DeletePostModal } from "@/app/components/DeletePostModal";
+import { useSearchPosts } from "@/app/services/hooks/useSearchPosts";
+import clsx from "clsx";
+import {
+  SearchPost,
+} from "@/app/interfaces/response/postResponse";
+import Pagination from "@/app/components/Pagination";
 
 export default function SharedPostListPage(props: {
   page: "home" | "our-blog";
@@ -17,17 +23,27 @@ export default function SharedPostListPage(props: {
   ];
 
   const router = useRouter();
-
+  const [posts, setPosts] = useState<SearchPost[]>([]);
   const [type, setType] = useState<"create" | "edit">("create");
   const [selectCategory, setSelectCategory] = useState<DropDownItem | null>();
   const [isOpenPostFormModal, setIsOpenPostFormModal] = useState(false);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [search, setSearch] = useState<string>("");
+  const [page, setPage] = useState(1);
 
+  // Form
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<DropDownItem | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+
+  const { search, setSearch, data, error, isLoading } = useSearchPosts({
+    params: {
+      page,
+      limit: 10,
+      userId: props.page === "our-blog" ? 1 : undefined,
+      categoryId: selectCategory?.id ? selectCategory.id : undefined,
+    },
+  });
 
   const handleResetForm = () => {
     setTitle("");
@@ -65,7 +81,7 @@ export default function SharedPostListPage(props: {
   };
 
   return (
-    <div className="bg-grey-100 mx-auto max-w-[798px] p-3 lg:pb-10">
+    <div className="mx-auto max-w-[798px] p-3 lg:pb-10">
       <div className="mt-6 mb-5">
         <ActionPostList
           categoryItems={categoryItems}
@@ -75,27 +91,44 @@ export default function SharedPostListPage(props: {
         />
       </div>
       <div className="overflow-hidden rounded-2xl">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {!isLoading && data?.posts.length === 0 && (
+          <div className="text-text text-lg font-semibold">No posts found</div>
+        )}
+        {isLoading && error && (
+          <div className="text-text text-lg font-semibold">{error}</div>
+        )}
+
+        {data.posts.map((post) => (
           <div
-            key={index}
+            key={post.id}
             className="cursor-pointer"
-            onClick={() => router.push(`/post/${index}`)}
+            onClick={() => router.push(`/post/${post.id}`)}
           >
             <Postcard
               isShowAction={props.page === "our-blog"}
               search={search}
-              username="Wittawat"
-              avatarImage="https://imgv3.fotor.com/images/slider-image/A-clear-close-up-photo-of-a-woman.jpg"
-              category="TV"
-              commentCount={32}
-              title="The Beginning of the End of the World"
-              content="The afterlife sitcom The Good Place comes to its culmination, the show’s two protagonists, Eleanor and Chidi, contemplate their future. Having lived thousands upon thousands of lifetimes together, and having experienced virtually everything this life has to offer"
+              username={post.user.username}
+              avatarImage={post.user.avatar}
+              category={post.category.name}
+              commentCount={post.commentCount}
+              title={post.title}
+              content={post.content}
               onEdit={handleOpenModalEdit}
-              onDelete={() => handleOpenModalDelete(index)}
+              onDelete={() => handleOpenModalDelete(post.id)}
             />
           </div>
         ))}
       </div>
+
+      {!data?.meta?.totalPage ? null : (
+        <div className={clsx("mt-5 flex justify-end pr-4")}>
+          <Pagination
+            page={page}
+            totalPage={data?.meta?.totalPage}
+            setPage={setPage}
+          />
+        </div>
+      )}
 
       {/* Modal */}
       <PostForm
