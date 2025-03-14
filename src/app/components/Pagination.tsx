@@ -23,7 +23,7 @@ export default function Pagination(props: PaginationProps) {
     setPage(page + 1);
   };
   return (
-    <div className="flex gap-3">
+    <div className={clsx("flex gap-3", { hidden: totalPage === 1 })}>
       <div className="flex space-x-3">
         <Image
           className={clsx("rotate-90", style, { "opacity-60": page === 1 })}
