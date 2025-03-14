@@ -44,7 +44,7 @@ export default function SharedPostListPage(props: {
     } else {
       setUserId(userId);
     }
-  }, []);
+  }, [props.page]);
 
   const { search, setSearch, data, error, isLoading } = useSearchPosts({
     params: {
