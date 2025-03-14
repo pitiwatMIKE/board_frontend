@@ -13,6 +13,7 @@ export default function SignInPage() {
   const { setUserToken } = useUserTokenStore();
   const [username, setUsername] = useState("");
   const redirectPath = searchParams.get("redirect");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const token = useUserTokenStore.getState().token;
@@ -22,6 +23,7 @@ export default function SignInPage() {
   }, []);
 
   const handleSignIn = async () => {
+    setError("");
     try {
       const data = await createUser({
         username,
@@ -33,7 +35,7 @@ export default function SignInPage() {
         router.push("/");
       }
     } catch (error) {
-      alert(JSON.stringify(error));
+      setError((error as any)?.message || "An unexpected error occurred");
     }
   };
 
@@ -54,12 +56,17 @@ export default function SignInPage() {
         <div className="w-full max-w-96 px-3">
           <div className="mb-10 text-[28px]">Sign in</div>
 
-          <InputField
-            className="mb-4"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <div className="mb-4">
+            <InputField
+              placeholder="Username"
+              value={username}
+              onChange={(e) => {
+                setError("");
+                setUsername(e.target.value)
+              }}
+            />
+            {error && <div className="text-sm mt-1 text-red-500">{error}</div>}
+          </div>
 
           <Button
             className="w-full"

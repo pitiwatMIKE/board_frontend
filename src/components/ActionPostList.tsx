@@ -4,6 +4,8 @@ import Image from "next/image";
 import clsx from "clsx";
 import InputField from "./InputField";
 import Button from "./Button";
+import { usePathname, useRouter } from "next/navigation";
+import useUserTokenStore from "@/store/userToken";
 
 export default function ActionPostList(props: {
   categoryItems: DropDownItem[];
@@ -11,8 +13,19 @@ export default function ActionPostList(props: {
   onSearch: (search: string) => void;
   onOpenModal: (value: boolean) => void;
 }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const { token } = useUserTokenStore();
   const { categoryItems, onSelectCategory, onSearch, onOpenModal } = props;
   const [isOpenSearch, setIsOpenSearch] = useState(false);
+
+  const handleOpenModal = () => {
+    if (!token) {
+      router.push(`/sign-in?redirect=${pathname}`);
+      return;
+    }
+    onOpenModal(true);
+  };
 
   return (
     <div className="flex items-center justify-between gap-9">
@@ -68,7 +81,7 @@ export default function ActionPostList(props: {
             variant="solid"
             rounded="sm"
             size="sm"
-            onClick={() => onOpenModal(true)}
+            onClick={handleOpenModal}
           >
             Create +
           </Button>
