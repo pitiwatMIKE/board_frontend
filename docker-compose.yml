@@ -1,0 +1,58 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: board-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: board_db
+    networks:
+      - app-network
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  nestjs:
+    build:
+      context: ../board_backend
+      dockerfile: Dockerfile.local
+    environment:
+      PORT: 3001
+      NODE_ENV: local
+      JWT_SECRET: yourSecretKey
+      JWT_EXPIRES_IN: 24h
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: admin
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: board_db
+    depends_on:
+      - postgres
+    networks:
+      - app-network
+    ports:
+      - "3001:3001"
+    command: sh -c "npm run seed && npm start"
+
+
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    depends_on:
+      - nestjs
+    networks:
+      - app-network
+    ports:
+      - "3000:3000"
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge

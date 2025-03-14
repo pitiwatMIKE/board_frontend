@@ -53,14 +53,14 @@ export default function DropDown(props: DropDownProps) {
 
           <MenuButton
             className={clsx(
-              "font-ibm-plex-sans flex items-center justify-end gap-0.5 font-medium whitespace-nowrap text-black",
+              "font-ibm-plex-sans flex items-center justify-between gap-0.5 font-medium whitespace-nowrap text-black p-3",
               {
-                "border-success text-success flex h-10 w-48 items-center justify-center rounded-lg border-1":
+                "border-success text-success flex h-10 w-56 items-center justify-between rounded-lg border-1 ":
                   type == "onModal",
               },
             )}
           >
-            <span>{selected ? selected.name : textNoneSelected}</span>
+            <div className="">{selected ? selected.name : textNoneSelected}</div>
             <Image
               src={
                 type == "onModal"
