@@ -19,7 +19,7 @@ services:
   nestjs:
     build:
       context: ../board_backend
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile
     environment:
       PORT: 3001
       NODE_ENV: local
@@ -42,7 +42,7 @@ services:
   nextjs:
     build:
       context: .
-      dockerfile: Dockerfile.local
+      dockerfile: Dockerfile
     depends_on:
       - nestjs
     networks:
